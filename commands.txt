@@ -1,0 +1,22 @@
+# Start Up
+export DEBEZIUM_VERSION=2.2
+docker compose up -d --build
+
+# Add sink
+curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" http://localhost:8083/connectors/ -d @es-sink.json
+curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" http://localhost:8083/connectors/ -d @source.json
+
+# Check Elastic Search
+curl 'http://localhost:9200/customers/_search?pretty'
+
+# Update record
+docker exec -it mysql /bin/bash
+mysql -u root -pdebezium
+USE inventory;
+SELECT * FROM customers;
+INSERT INTO customers VALUES(default, 'Jaideep', 'Chahal', 'Jaideep@recruitcrm.io');
+exit
+exit
+
+# Check Elastic Search
+curl 'http://localhost:9200/customers/_search?pretty'
