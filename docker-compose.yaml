@@ -3,6 +3,7 @@ services:
   zookeeperdbz:
     image: quay.io/debezium/zookeeper:${DEBEZIUM_VERSION}
     container_name: zookeeperdbz
+    restart: always
     ports:
       - 2181:2181
       - 2888:2888
@@ -11,6 +12,7 @@ services:
   kafkadbz:
     image: quay.io/debezium/kafka:${DEBEZIUM_VERSION}
     container_name: kafkadbz
+    restart: always
     ports:
       - 9092:9092
     links:
@@ -21,6 +23,7 @@ services:
   mysqldbz:
     image: quay.io/debezium/example-mysql:${DEBEZIUM_VERSION}
     container_name: mysqldbz
+    restart: always
     ports:
       - 3306:3306
     env_file:
@@ -29,18 +32,26 @@ services:
   elasticdbz:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.3.0
     container_name: elasticdbz
+    restart: always
     ports:
       - "9200:9200"
     env_file:
       - ./env/elasticdbz.env
+    # volumes:
+    #   - elasticsearch_data:/usr/share/elasticsearch/data:rw
 
   connectdbz:
     image: debezium/connect-jdbc-es:${DEBEZIUM_VERSION}
     container_name: connectdbz
+    restart: always
     build:
       context: debezium-jdbc-es
       args:
         DEBEZIUM_VERSION: ${DEBEZIUM_VERSION}
+    volumes:
+      - kafka_config:/kafka/config
+      - kafka_data:/kafka/data
+      - kafka_logs:/kafka/logs
     ports:
       - 8083:8083
       - 5005:5005
@@ -50,3 +61,16 @@ services:
       - elasticdbz
     env_file:
       - ./env/connectdbz.env
+
+volumes:
+  # elasticsearch_data:
+  #   driver: local
+
+  kafka_config:
+    driver: local
+
+  kafka_data:
+    driver: local
+
+  kafka_logs:
+    driver: local
