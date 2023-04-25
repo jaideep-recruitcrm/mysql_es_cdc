@@ -16,7 +16,7 @@ curl -H "Accept:application/json" localhost:8083/connectors
 curl 'http://localhost:9200/customers/_search?pretty'
 
 # Update record
-docker exec -it mysql /bin/bash
+docker exec -it mysqldbz /bin/bash
 mysql -u root -pdebezium
 USE inventory;
 SELECT * FROM customers;
