@@ -42,7 +42,7 @@ How to run:
 
 ```shell
 # Start the application
-export DEBEZIUM_VERSION=2.1
+export DEBEZIUM_VERSION=2.2
 docker compose up -d --build
 
 # Start Elasticsearch connector
