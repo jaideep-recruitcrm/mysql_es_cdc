@@ -56,7 +56,7 @@ curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json"
 Check contents of the MySQL database:
 
 ```shell
-docker compose up -d'
+docker compose up -d
 ```
 
 Verify that Elasticsearch has the same content:
